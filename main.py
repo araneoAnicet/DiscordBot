@@ -49,7 +49,7 @@ async def on_member_join(member):
     booked_names = list(map(lambda j: j.display_name, [i for i in bot.get_all_members()]))
     new_name = gen_names()[randint(0, len(gen_names()))]  # takes a random name from the namelist
     iteration_start_time = time()
-    while booked_names.count(new_name) >= 1:  # if there's already a member with this name
+    while booked_names.count('Пидор ' + new_name) >= 1:  # if there's already a member with this name
         if time() - iteration_start_time >= 15:
             print('>>> ' + bot_rename_error)
             new_name = 'ERROR'
