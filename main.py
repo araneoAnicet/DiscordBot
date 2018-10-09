@@ -3,8 +3,7 @@ from discord.ext import commands
 from config import *
 import apiai
 import json
-from time import sleep, asctime, time
-from random import randint
+from time import sleep, asctime
 
 
 Client = discord.Client()
@@ -12,12 +11,9 @@ bot = commands.Bot(command_prefix='?', description=bot_description)
 
 
 def gen_names():
-    nicknames = []
     with open('nick_generator.txt', mode='r', encoding='utf-8') as rem:
-        for line in rem:
-            nicknames.append(line.split('\n'))
-    nicknames = list(map(lambda i: nicknames[i][0], range(len(nicknames))))
-    return nicknames  # returns a list with the nicknames from the .txt file
+        nicknames = [x.split('\n') for x in rem]
+    return list(map(lambda i: nicknames[i][0], range(len(nicknames))))  # a list of nicknames from the .txt file
 
 
 def msg_neural_gen(input_text):  # generates the message using NeuralNetwork
@@ -47,14 +43,11 @@ async def on_ready():
 async def on_member_join(member):
     '''Renames the new members'''
     booked_names = list(map(lambda j: j.display_name, [i for i in bot.get_all_members()]))
-    new_name = gen_names()[randint(0, len(gen_names()))]  # takes a random name from the namelist
-    iteration_start_time = time()
-    while booked_names.count('Пидор ' + new_name) >= 1:  # if there's already a member with this name
-        if time() - iteration_start_time >= 15:
-            print('>>> ' + bot_rename_error)
-            new_name = 'ERROR'
-            break
-        new_name = gen_names()[randint(0, len(gen_names()))]  # generate the name again
+    new_name = ''
+    for name in gen_names():
+        if booked_names.count('Пидор ' + name) != 0:
+            continue
+        new_name = name
     await bot.change_nickname(member, 'Пидор ' + new_name)  # changes user's nickname on the server
     print('>>> ' + member.name + ' was renamed into the ' + new_name, ' congratulations!')
 
