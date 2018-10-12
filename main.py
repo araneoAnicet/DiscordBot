@@ -27,10 +27,11 @@ def msg_neural_gen(input_text):  # generates the message using NeuralNetwork
 
 
 def appeal_check(msg):
+    """Checks if the user wanted to talk to the bot"""
     splited_content = msg.content.split('>')
     if splited_content[0] == bot_appeal_prefix:
-        return True
-    return False
+        return True  # if user mentioned bot
+    return False  # if user did not mention bot
 
 
 
@@ -45,9 +46,11 @@ async def on_member_join(member):
     booked_names = list(map(lambda j: j.display_name, [i for i in bot.get_all_members()]))
     new_name = ''
     for name in gen_names():
+        print('Checked: ' + name)
         if booked_names.count('Пидор ' + name) != 0:
             continue
         new_name = name
+        print('found free nickname: ' + new_name)
     await bot.change_nickname(member, 'Пидор ' + new_name)  # changes user's nickname on the server
     print('>>> ' + member.name + ' was renamed into the ' + new_name, ' congratulations!')
 
