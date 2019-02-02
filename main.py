@@ -38,7 +38,7 @@ def appeal_check(msg):
 
 @bot.event
 async def on_ready():
-    print('>>> Bot has connected to the Discord')
+    print('>>> Bot has connected to Discord')
 
 @bot.event
 async def on_member_join(member):
